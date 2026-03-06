@@ -1,0 +1,32 @@
+```text
+# Architecture Notes
+
+## Overview
+A room booking system designed to allow users to browse rooms, check their availability for specific dates, and make reservations. The system provides a seamless UI for users to manage their bookings while ensuring safe and consistent data storage.
+
+## System Components
+- **Client/Frontend:** A React-based Single Page Application (SPA) that provides the user interface. It handles user interactions, client-side routing, state management (using React hooks), and communication with the backend APIs via Axios.
+- **Server/Backend:** A Node.js and Express.js REST API that serves as the middle layer. It contains the core business logic, handles user authentication, validates booking requests, and interacts with the database layer through dedicated controllers and models.
+- **Database:** A relational database (MySQL) responsible for data persistence. It stores information about users, rooms, and bookings across separate tables with foreign key constraints to maintain data integrity.
+
+## Technology Stack
+- **Languages:** TypeScript (Frontend), JavaScript (Backend), SQL
+- **Frameworks/Libraries:** 
+  - Frontend: React (built with Vite), React Router DOM, Tailwind CSS, Axios
+  - Backend: Node.js, Express.js, JSON Web Tokens (JWT), bcryptjs, mysql2
+- **Infrastructure:** Minimal setup (Node environment + standard MySQL Server).
+
+## Data Flow
+1. **Interaction:** The user performs an action on the React UI (e.g., clicking "Book Room").
+2. **Request:** The frontend sends an asynchronous HTTP request (e.g., POST `/bookings/:userId`) to the Express backend.
+3. **Processing:** The Express router directs the request to the appropriate controller, which validates the payload.
+4. **Database Execution:** The controller calls a model function, which securely executes a parameterized raw SQL query against the MySQL database.
+5. **Response:** The database returns the result to the model, which passes it to the controller. The controller formats this into a JSON payload and responds to the frontend.
+6. **UI Update:** The React frontend updates its state based on the response (e.g., showing a success modal and removing the room from the available list).
+
+## Design Decisions
+- **Separation of Concerns (MVC Pattern):** The backend is divided into `routes` (URL routing), `controllers` (request handling and response formatting), and `models` (database interaction), keeping the codebase modular and maintainable.
+- **Raw SQL over ORM:** The application bypasses heavy Object-Relational Mappers (ORMs) in favor of the `mysql2` package with parameterized raw SQL queries. This reduces overhead and provides direct control over query execution and performance.
+- **Client-Side Routing:** Utilizes `react-router-dom` to provide a snappy, SPA experience without full page reloads when navigating between "All Rooms", "Available Rooms", and "My Bookings".
+- **Stateless Authentication:** Uses JWTs for user sessions, keeping the server stateless and scalable.
+```
